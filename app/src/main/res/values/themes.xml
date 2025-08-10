@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.FocusLoop" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPurple</item>
+        <item name="colorPrimaryVariant">@color/colorPurple</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorPink</item>
+        <item name="colorSecondaryVariant">@color/colorPink</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Background color. -->
+        <item name="android:windowBackground">@color/colorPinkLight</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

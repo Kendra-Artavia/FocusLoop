@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPinkLight"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:text="@string/home_title"
+        android:textColor="@android:color/black"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/newTaskButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_button_pink"
+        android:drawableStart="@drawable/icon_1"
+        android:drawablePadding="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/new_task_button"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/pomodoroButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_button_blue"
+        android:drawableStart="@drawable/icon_2"
+        android:drawablePadding="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/pomodoro_button"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/myTasksButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_button_purple"
+        android:drawableStart="@drawable/icon_3"
+        android:drawablePadding="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/my_tasks_button"
+        android:textColor="@android:color/black" />
+</LinearLayout>

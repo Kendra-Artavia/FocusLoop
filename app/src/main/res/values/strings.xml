@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Nombre de la aplicación -->
+    <string name="app_name">FocusLoop</string>
+    <!-- Texto del botón -->
+    <string name="start_button">Start</string>
+    <!-- Mensaje del Toast -->
+    <string name="toast_message">FELIZ RELAX</string>
+    <string name="image_description">Imagen de la aplicación</string>
+    <!-- Título de la pantalla -->
+    <string name="home_title">HOME</string>
+    <!-- Botón Nueva Tarea -->
+    <string name="new_task_button">New Task</string>
+    <!-- Botón Sesión Pomodoro -->
+    <string name="pomodoro_button">Pomodoro Session</string>
+    <!-- Botón Mis Tareas -->
+    <string name="my_tasks_button">My Tasks</string>
+    <!-- Mensajes de iconos -->
+    <string name="new_task_icon">icon_1</string>
+    <string name="pomodoro_icon">icon_2</string>
+    <string name="my_tasks_icon">icon_3</string>
+
+
+</resources>
