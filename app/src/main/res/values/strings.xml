@@ -14,11 +14,12 @@
     <string name="cancel_button">Cancel</string>
     <string name="create_task_button">Create Task</string>
     <string name="back_button">Back</string>
+    <string name="pause_button">Pause</string>
+    <string name="resume_button">Resume</string>
 
-    <!-- Botones de tipo de sesión -->
     <string name="base_button">Base\n25min / 5min</string>
-    <string name="easy_button">Fácil\n10min / 5min</string>
-    <string name="custom_button">Personalizado\nTu elección</string>
+    <string name="easy_button">Easy\n10min / 5min</string>
+    <string name="custom_button">Custom\nYour choice</string>
 
     <!-- Mensajes y Toast -->
     <string name="toast_message">FELIZ RELAX</string>
@@ -50,7 +51,7 @@
 
     <!-- Pomodoro -->
     <string name="pomodoro_title">Pomodoro</string>
-    <string name="session_status">Trabajo</string> <!-- Estado de la sesión (Trabajo/Descanso) -->
+    <string name="session_status"> </string>
     <string name="music_select_title">Select Music</string>
     <string name="new_task_button">New Task</string>
 

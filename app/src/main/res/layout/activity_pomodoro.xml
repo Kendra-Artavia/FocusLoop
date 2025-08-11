@@ -21,7 +21,9 @@
             android:layout_height="70dp"
             android:contentDescription="@string/back_button"
             android:src="@drawable/icon_4"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside" />
 
         <!-- Título de la pantalla -->
         <TextView
@@ -38,20 +40,19 @@
         <!-- Botón de volumen -->
         <ImageButton
             android:id="@+id/volumeButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/music_select_title"
-            android:src="@drawable/icon_5" />
+            android:src="@drawable/icon_5"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside" />
     </LinearLayout>
 
-    <!-- Spinner para seleccionar música -->
-    <Spinner
-        android:id="@+id/musicSpinner"
+    <SeekBar
+        android:id="@+id/volumeSeekBarPlaceholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:spinnerMode="dropdown"
-        android:contentDescription="@string/music_select_title" />
+        android:visibility="gone" />
 
     <!-- Selección de tipo de sesión -->
     <LinearLayout
@@ -163,7 +164,7 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:minWidth="120dp" />
-
+            
             <!-- Botón Detener -->
             <Button
                 android:id="@+id/stopButton"
@@ -180,6 +181,45 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:minWidth="120dp" />
+        </LinearLayout>
+
+        <!-- NUEVO: Botones para seleccionar música debajo del temporizador -->
+        <LinearLayout
+            android:id="@+id/musicButtonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/musicAmbientButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ambient"
+                android:background="@drawable/rounded_button_blue"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/musicRelaxingButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Relaxing"
+                android:background="@drawable/rounded_button_blue"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/musicRainButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Rain"
+                android:background="@drawable/rounded_button_blue"
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
