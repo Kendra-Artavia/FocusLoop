@@ -40,13 +40,19 @@
         <!-- Botón de volumen -->
         <ImageButton
             android:id="@+id/volumeButton"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/music_select_title"
             android:src="@drawable/icon_5"
             android:background="@android:color/transparent"
             android:scaleType="centerInside" />
     </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/volumeSeekBarPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <!-- Selección de tipo de sesión -->
     <LinearLayout
@@ -188,41 +194,32 @@
 
             <Button
                 android:id="@+id/musicAmbientButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Ambient"
                 android:background="@drawable/rounded_button_blue"
                 android:textColor="#FFFFFF"
-                android:layout_marginEnd="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/musicRelaxingButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Relaxing"
                 android:background="@drawable/rounded_button_blue"
                 android:textColor="#FFFFFF"
-                android:layout_marginEnd="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/musicRainButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Rain"
                 android:background="@drawable/rounded_button_blue"
-                android:textColor="#FFFFFF"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

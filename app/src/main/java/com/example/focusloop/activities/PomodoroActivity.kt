@@ -6,6 +6,18 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import com.example.focusloop.R
 import android.os.CountDownTimer
+import android.media.AudioManager
+import android.view.View
+import android.content.Context
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.net.Uri
+import android.provider.Settings
+import android.util.Log
+import android.widget.SeekBar
+import androidx.core.content.ContextCompat
+import com.example.focusloop.activities.PomodoroActivity
+
 class PomodoroActivity : AppCompatActivity() {
 
     private lateinit var mediaPlayer: MediaPlayer
@@ -16,6 +28,8 @@ class PomodoroActivity : AppCompatActivity() {
     private var timeLeftInMillis: Long = 0L
     private var isPaused = false
     private var pauseTimeLeft: Long = 0L
+    private lateinit var volumeSeekBar: SeekBar
+    private lateinit var pauseButton: Button
 
     // NUEVO: Guardar el tipo de música seleccionada
     private var selectedMusicType: String = "Ambient"
@@ -24,35 +38,68 @@ class PomodoroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pomodoro)
 
+        // --- VOLUMEN ---
+        volumeSeekBar = SeekBar(this)
+        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        volumeSeekBar.max = maxVolume
+        volumeSeekBar.progress = currentVolume
+
+        // Add the SeekBar to the layout (below header)
+        val headerLayout = findViewById<LinearLayout>(R.id.sessionButtonsLayout).parent as LinearLayout
+        headerLayout.addView(volumeSeekBar, 1) // Insert after header
+
+        volumeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0)
+                if (::mediaPlayer.isInitialized) {
+                    val vol = progress / maxVolume.toFloat()
+                    mediaPlayer.setVolume(vol, vol)
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        // --- PAUSA ---
+        pauseButton = Button(this)
+        pauseButton.id = View.generateViewId()
+        pauseButton.text = getString(R.string.pause_button)
+        pauseButton.setBackgroundResource(R.drawable.rounded_button_blue)
+        pauseButton.setTextColor(resources.getColor(android.R.color.white))
+        val timerControlsLayout = findViewById<LinearLayout>(R.id.timerControlsLayout)
+        timerControlsLayout.addView(pauseButton, 1) // Insert between Start and Stop
+
+        pauseButton.setOnClickListener {
+            if (timerRunning && !isPaused) {
+                pausePomodoroSession()
+            } else if (isPaused) {
+                resumePomodoroSession()
+            }
+        }
+
         // --- MUSIC BUTTONS ---
         val musicAmbientButton = findViewById<Button>(R.id.musicAmbientButton)
         val musicRelaxingButton = findViewById<Button>(R.id.musicRelaxingButton)
         val musicRainButton = findViewById<Button>(R.id.musicRainButton)
 
-        // Inicializa el estado visual de los botones de música
-        highlightSelectedMusicButton(musicAmbientButton, musicRelaxingButton, musicRainButton)
-
         musicAmbientButton.setOnClickListener {
-            if (selectedMusicType != "Ambient") {
-                selectedMusicType = "Ambient"
-                playMusic(selectedMusicType)
-                highlightSelectedMusicButton(musicAmbientButton, musicRelaxingButton, musicRainButton)
-            }
+            selectedMusicType = "Ambient"
+            highlightSelectedMusicButton(musicAmbientButton, musicRelaxingButton, musicRainButton)
+            playMusic(selectedMusicType)
         }
         musicRelaxingButton.setOnClickListener {
-            if (selectedMusicType != "Relaxing") {
-                selectedMusicType = "Relaxing"
-                playMusic(selectedMusicType)
-                highlightSelectedMusicButton(musicRelaxingButton, musicAmbientButton, musicRainButton)
-            }
+            selectedMusicType = "Relaxing"
+            highlightSelectedMusicButton(musicRelaxingButton, musicAmbientButton, musicRainButton)
+            playMusic(selectedMusicType)
         }
         musicRainButton.setOnClickListener {
-            if (selectedMusicType != "Rain") {
-                selectedMusicType = "Rain"
-                playMusic(selectedMusicType)
-                highlightSelectedMusicButton(musicRainButton, musicAmbientButton, musicRelaxingButton)
-            }
+            selectedMusicType = "Rain"
+            highlightSelectedMusicButton(musicRainButton, musicAmbientButton, musicRelaxingButton)
+            playMusic(selectedMusicType)
         }
+        highlightSelectedMusicButton(musicAmbientButton, musicRelaxingButton, musicRainButton)
 
         // Botón para iniciar la sesión Pomodoro
         val startButton = findViewById<Button>(R.id.startButton)
@@ -60,8 +107,6 @@ class PomodoroActivity : AppCompatActivity() {
 
         startButton.setOnClickListener {
             if (!timerRunning) {
-                // Siempre usa el valor actual de workMinutes antes de iniciar
-                timeLeftInMillis = workMinutes * 60 * 1000L
                 startPomodoroSession()
                 timerRunning = true
                 isPaused = false
@@ -82,51 +127,26 @@ class PomodoroActivity : AppCompatActivity() {
             finish()
         }
 
-        // Referencias a los botones de sesión
-        val baseButton = findViewById<Button>(R.id.baseButton)
-        val easyButton = findViewById<Button>(R.id.easyButton)
-        val customButton = findViewById<Button>(R.id.customButton)
-
         // Configuración de botones de sesión
-        baseButton.setOnClickListener {
-            stopIfRunningAndReset()
+        findViewById<Button>(R.id.baseButton).setOnClickListener {
             workMinutes = 25
             breakMinutes = 5
             updateTimer()
-            highlightSelectedSessionButton(baseButton, easyButton, customButton)
-            Toast.makeText(this, "Base mode selected", Toast.LENGTH_SHORT).show()
         }
 
-        easyButton.setOnClickListener {
-            stopIfRunningAndReset()
+        findViewById<Button>(R.id.easyButton).setOnClickListener {
             workMinutes = 10
             breakMinutes = 5
             updateTimer()
-            highlightSelectedSessionButton(easyButton, baseButton, customButton)
-            Toast.makeText(this, "Easy mode selected", Toast.LENGTH_SHORT).show()
         }
 
-        customButton.setOnClickListener {
-            stopIfRunningAndReset()
-            showCustomTimeDialog {
-                highlightSelectedSessionButton(customButton, baseButton, easyButton)
-                Toast.makeText(this, "Custom mode selected", Toast.LENGTH_SHORT).show()
-            }
+        findViewById<Button>(R.id.customButton).setOnClickListener {
+            // Lógica para establecer una sesión personalizada
+            showCustomTimeDialog()
         }
-
-        // Inicializa el temporizador con el valor por defecto y resalta el botón base
-        updateTimer()
-        highlightSelectedSessionButton(baseButton, easyButton, customButton)
     }
 
-    // NUEVO: Función para resaltar el botón de sesión seleccionado
-    private fun highlightSelectedSessionButton(selected: Button, other1: Button, other2: Button) {
-        selected.setBackgroundResource(R.drawable.rounded_button_pink)
-        other1.setBackgroundResource(R.drawable.rounded_button_blue)
-        other2.setBackgroundResource(R.drawable.rounded_button_blue)
-    }
-
-    // Añade esta función para resaltar el botón de música seleccionado
+    // NUEVO: Función para resaltar el botón seleccionado
     private fun highlightSelectedMusicButton(selected: Button, other1: Button, other2: Button) {
         selected.setBackgroundResource(R.drawable.rounded_button_pink)
         other1.setBackgroundResource(R.drawable.rounded_button_blue)
@@ -141,8 +161,8 @@ class PomodoroActivity : AppCompatActivity() {
 
     private fun startPomodoroSession() {
         playMusic(selectedMusicType)
-        // Usa el valor actual de timeLeftInMillis
-        countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
+        val duration = if (pauseTimeLeft > 0L) pauseTimeLeft else workMinutes * 60 * 1000L
+        countDownTimer = object : CountDownTimer(duration, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 timeLeftInMillis = millisUntilFinished
                 val minutes = (millisUntilFinished / 1000) / 60
@@ -163,6 +183,19 @@ class PomodoroActivity : AppCompatActivity() {
         isPaused = false
     }
 
+    private fun pausePomodoroSession() {
+        countDownTimer?.cancel()
+        pauseTimeLeft = timeLeftInMillis
+        isPaused = true
+        pauseButton.text = getString(R.string.resume_button)
+    }
+
+    private fun resumePomodoroSession() {
+        startPomodoroSession()
+        pauseButton.text = getString(R.string.pause_button)
+        isPaused = false
+    }
+
     private fun stopPomodoroSession() {
         countDownTimer?.cancel()
         if (::mediaPlayer.isInitialized) mediaPlayer.stop()
@@ -170,6 +203,7 @@ class PomodoroActivity : AppCompatActivity() {
         pauseTimeLeft = timeLeftInMillis
         isPaused = false
         timerRunning = false
+        pauseButton.text = getString(R.string.pause_button)
     }
 
     private fun playMusic(musicType: String) {
@@ -182,21 +216,17 @@ class PomodoroActivity : AppCompatActivity() {
             "Relaxing" -> mediaPlayer = MediaPlayer.create(this, R.raw.relaxing_music)
             "Rain" -> mediaPlayer = MediaPlayer.create(this, R.raw.rain_sounds)
         }
-        // Set volume to system default (no custom SeekBar)
+        // Set volume to current SeekBar value
+        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val currentVolume = volumeSeekBar.progress
+        val vol = currentVolume / maxVolume.toFloat()
+        mediaPlayer.setVolume(vol, vol)
         mediaPlayer.isLooping = true
         mediaPlayer.start()
     }
 
-    private fun stopIfRunningAndReset() {
-        if (timerRunning || isPaused) {
-            stopPomodoroSession()
-        }
-        // Reinicia el tiempo restante para reflejar el nuevo valor seleccionado
-        timeLeftInMillis = workMinutes * 60 * 1000L
-    }
-
-    // Modifica showCustomTimeDialog para aceptar un callback opcional
-    private fun showCustomTimeDialog(onSelected: (() -> Unit)? = null) {
+    private fun showCustomTimeDialog() {
         val input = EditText(this)
         input.hint = "Enter minutes"
         androidx.appcompat.app.AlertDialog.Builder(this)
@@ -207,27 +237,9 @@ class PomodoroActivity : AppCompatActivity() {
                 workMinutes = time
                 breakMinutes = 5
                 updateTimer()
-                timeLeftInMillis = workMinutes * 60 * 1000L
                 d.dismiss()
-                onSelected?.invoke()
             }
             .setNegativeButton("Cancel") { d, _ -> d.dismiss() }
             .show()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // Detener la música si la actividad deja de estar en primer plano
-        if (::mediaPlayer.isInitialized && mediaPlayer.isPlaying) {
-            mediaPlayer.stop()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Liberar recursos del MediaPlayer al destruir la actividad
-        if (::mediaPlayer.isInitialized) {
-            mediaPlayer.release()
-        }
     }
 }
