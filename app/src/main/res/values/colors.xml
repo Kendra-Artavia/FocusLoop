@@ -5,6 +5,16 @@
     <color name="colorPink">#FFAFCC</color>
     <color name="colorMint">#D8F7F2</color>
     <color name="colorPurple">#CDB4DB</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+
+    <!-- Paleta base (evita errores del tema por defecto) -->
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+
 </resources>

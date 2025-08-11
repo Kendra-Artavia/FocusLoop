@@ -12,18 +12,58 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         >
 
-        <!-- MainActivity: debe ser exportada para ser lanzada por el sistema -->
-        <activity android:name=".MainActivity"
-            android:exported="true"> <!-- MainActivity debe tener exported=true -->
+        <!-- Launcher -->
+        <activity
+            android:name=".activities.MainActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <!-- ScreenActivity: también debe ser exportada si se va a acceder desde otras actividades -->
-        <activity android:name=".ScreenActivity"
-            android:exported="true" /> <!-- Set export to true to allow navigation to this activity -->
+        <!-- Pantalla con 3 opciones -->
+        <activity
+            android:name=".activities.ScreenActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity"/>
+        </activity>
+
+        <!-- Nueva Tarea -->
+        <activity
+            android:name=".activities.TaskActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.ScreenActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ScreenActivity"/>
+        </activity>
+
+        <!-- Sesión Pomodoro -->
+        <activity
+            android:name=".activities.PomodoroActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.ScreenActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ScreenActivity"/>
+        </activity>
+
+        <!-- Mis Tareas -->
+        <activity
+            android:name=".activities.MyTasksActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.ScreenActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ScreenActivity"/>
+        </activity>
+
+
+
 
     </application>
 </manifest>

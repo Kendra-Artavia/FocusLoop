@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <!-- Header con botón de regreso y volumen -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <!-- Botón de regreso -->
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:contentDescription="@string/back_button"
+            android:src="@drawable/icon_4"
+            android:layout_marginEnd="16dp" />
+
+        <!-- Título de la pantalla -->
+        <TextView
+            android:id="@+id/pomodoroTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pomodoro_title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:gravity="center" />
+
+        <!-- Botón de volumen -->
+        <ImageButton
+            android:id="@+id/volumeButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:contentDescription="@string/music_select_title"
+            android:src="@drawable/icon_5" />
+    </LinearLayout>
+
+    <!-- Spinner para seleccionar música -->
+    <Spinner
+        android:id="@+id/musicSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:spinnerMode="dropdown"
+        android:contentDescription="@string/music_select_title" />
+
+    <!-- Selección de tipo de sesión -->
+    <LinearLayout
+        android:id="@+id/sessionButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <!-- Botón Base -->
+        <Button
+            android:id="@+id/baseButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_button_blue"
+            android:text="@string/base_button"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
+
+        <!-- Botón Fácil -->
+        <Button
+            android:id="@+id/easyButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_button_blue"
+            android:text="@string/easy_button"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
+
+        <!-- Botón Personalizado -->
+        <Button
+            android:id="@+id/customButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button_blue"
+            android:text="@string/custom_button"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
+    </LinearLayout>
+
+    <!-- Temporizador -->
+    <LinearLayout
+        android:id="@+id/timerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <!-- Estado de la sesión -->
+        <TextView
+            android:id="@+id/sessionStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/session_status"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Temporizador -->
+        <TextView
+            android:id="@+id/pomodoroTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25:00"
+            android:textSize="72sp"
+            android:textColor="#333333"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Controles del temporizador -->
+        <LinearLayout
+            android:id="@+id/timerControlsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Botón Iniciar -->
+            <Button
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button_pink"
+                android:text="@string/start_button"
+                android:textColor="#FFFFFF"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <!-- Botón Detener -->
+            <Button
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/stop_button"
+                android:textColor="#666666"
+                android:background="@drawable/rounded_button_blue"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:minWidth="120dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

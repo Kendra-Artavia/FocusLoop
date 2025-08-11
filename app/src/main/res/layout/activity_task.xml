@@ -1,0 +1,183 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_task_title"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/labelTaskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/task_name_label"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:labelFor="@id/taskName"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/taskName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/task_name_hint"
+        android:inputType="text"
+        android:autofillHints="name"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/labelTaskDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/task_description_label"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:labelFor="@id/taskDescription"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/taskDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/task_description_hint"
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:importantForAutofill="no"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/labelCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/category_label"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:labelFor="@id/taskCategory"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <Spinner
+            android:id="@+id/taskCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/newCategoryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="@string/new_category"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_button_purple"
+            android:foreground="?attr/selectableItemBackgroundBorderless"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/labelStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/status_label"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:labelFor="@id/taskStatus"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/taskStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/labelStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_date_label"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:labelFor="@id/startDate"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/startDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/start_date_hint"
+        android:inputType="date"
+        android:importantForAutofill="no"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/labelEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_date_label"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:labelFor="@id/endDate"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/endDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/end_date_hint"
+        android:inputType="date"
+        android:importantForAutofill="no"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="@string/cancel_button"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_button_white"
+            android:textColor="@android:color/black"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/createTaskButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="@string/create_task_button"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_button_purple"
+            android:textColor="@android:color/white"
+            android:foreground="?attr/selectableItemBackgroundBorderless"/>
+    </LinearLayout>
+</LinearLayout>
