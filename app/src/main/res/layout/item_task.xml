@@ -8,15 +8,20 @@
 
     <TextView
         android:id="@+id/taskName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Task Name"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/taskDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Task Description"
-        android:textSize="14sp" />
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/taskStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="4dp" />
 </LinearLayout>

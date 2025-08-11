@@ -1,6 +1,7 @@
 // activities/TaskActivity.kt
 package com.example.focusloop.activities
 
+import android.app.DatePickerDialog
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.*
@@ -9,6 +10,8 @@ import com.example.focusloop.data.PrefsRepo
 import com.example.focusloop.models.Category
 import com.example.focusloop.models.Task
 import com.example.focusloop.models.TaskStatus
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TaskActivity : BaseActivity() {
 
@@ -34,6 +37,8 @@ class TaskActivity : BaseActivity() {
         val taskDescription: EditText = findViewById(R.id.taskDescription)
         taskCategory = findViewById(R.id.taskCategory)
         val taskStatus: Spinner = findViewById(R.id.taskStatus)
+        val startDate: EditText = findViewById(R.id.startDate)
+        val endDate: EditText = findViewById(R.id.endDate)
 
         // Categorías: carga de prefs; si está vacío, agrega defaults y guarda
         categoryNames.clear()
@@ -93,6 +98,13 @@ class TaskActivity : BaseActivity() {
             Toast.makeText(this, "Task created successfully.", Toast.LENGTH_SHORT).show()
             finish()
         }
+
+        startDate.setOnClickListener {
+            showDatePickerDialog(startDate)
+        }
+        endDate.setOnClickListener {
+            showDatePickerDialog(endDate)
+        }
     }
 
     private fun showNewCategoryDialog() {
@@ -116,5 +128,22 @@ class TaskActivity : BaseActivity() {
             }
             .setNegativeButton("Cancel") { d, _ -> d.dismiss() }
             .show()
+    }
+
+    private fun showDatePickerDialog(targetEditText: EditText) {
+        val calendar = Calendar.getInstance()
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            val selectedCalendar = Calendar.getInstance()
+            selectedCalendar.set(year, month, dayOfMonth)
+            val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+            targetEditText.setText(sdf.format(selectedCalendar.time))
+        }
+        DatePickerDialog(
+            this,
+            dateSetListener,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 }
