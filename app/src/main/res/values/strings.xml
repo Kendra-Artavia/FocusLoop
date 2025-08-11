@@ -55,4 +55,15 @@
     <string name="music_select_title">Select Music</string>
     <string name="new_task_button">New Task</string>
 
+    <!-- Nuevos recursos de texto -->
+    <string name="base_mode_selected">Base mode selected</string>
+    <string name="easy_mode_selected">Easy mode selected</string>
+    <string name="custom_mode_selected">Custom mode selected</string>
+    <string name="enter_minutes_hint">Enter minutes</string>
+    <string name="set_custom_time_title">Set Custom Time</string>
+    <string name="set_button">Set</string>
+    <string name="music_ambient">Ambient</string>
+    <string name="music_relaxing">Relaxing</string>
+    <string name="music_rain">Rain</string>
+    <string name="pomodoro_time_default">25:00</string>
 </resources>
