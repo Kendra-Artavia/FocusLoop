@@ -23,11 +23,7 @@ class TaskActivity : BaseActivity() {
 
         repo = PrefsRepo(this)
 
-        // Configuración del botón de "Atrás"
-        val backButton: ImageButton = findViewById(R.id.backButton)
-        backButton.setOnClickListener {
-            finish()  // Cierra la actividad y regresa a la actividad anterior
-        }
+
 
         val taskName: EditText = findViewById(R.id.taskName)
         val taskDescription: EditText = findViewById(R.id.taskDescription)
