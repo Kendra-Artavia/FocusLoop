@@ -109,7 +109,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:background="@drawable/blue_border">
 
         <!-- Estado de la sesión -->
         <TextView
@@ -148,9 +149,9 @@
                 android:id="@+id/startButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_button_pink"
+                android:background="@drawable/pink_border"
                 android:text="@string/start_button"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/colorPinkLight"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
                 android:paddingTop="12dp"
@@ -166,8 +167,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/stop_button"
-                android:textColor="#666666"
-                android:background="@drawable/rounded_button_blue"
+                android:textColor="@color/colorBlue"
+                android:background="@drawable/blue_border"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
                 android:paddingTop="12dp"

@@ -11,7 +11,7 @@
         android:id="@+id/backButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:contentDescription="Back button"
+        android:contentDescription="@string/back_button"
         android:src="@drawable/icon_4"
         android:layout_gravity="start"
         android:layout_marginBottom="8dp"
@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Tasks"
+        android:text="@string/my_tasks_title"
         android:textSize="24sp"
         android:textColor="@color/black"
         android:layout_marginBottom="16dp"
@@ -36,7 +36,7 @@
         android:id="@+id/searchTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search tasks..."
+        android:hint="@string/search_tasks_hint"
         android:padding="12dp"
         android:background="@color/white"
         android:textColor="@color/black"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/status_options"
-            android:background="@color/colorPink"/>
+            android:background="@drawable/purple_border"/>
 
         <Spinner
             android:id="@+id/categorySpinner"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/category_options"
-            android:background="@color/colorPink"
+            android:background="@drawable/purple_border"
             android:layout_marginLeft="16dp"/>
 
     </LinearLayout>
@@ -82,12 +82,12 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/icon_5"
-            android:contentDescription="Search icon"/>
+            android:contentDescription="@string/search_icon_desc"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No tasks found"
+            android:text="@string/no_tasks_found"
             android:textSize="18sp"
             android:textColor="#000000"
             android:layout_marginTop="16dp"/>
@@ -95,11 +95,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create your first task"
+            android:text="@string/create_first_task"
             android:textSize="16sp"
             android:textColor="@color/colorPink"
             android:layout_marginTop="8dp"/>
 
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

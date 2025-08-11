@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" />  <!-- Fondo transparente -->
+    <corners android:radius="16dp" />  <!-- Radio del borde redondeado -->
+    <stroke android:color="@color/colorPurple" android:width="2dp" />  <!-- Borde de color rosa -->
+    <padding android:left="16dp" android:top="12dp"
+        android:right="16dp" android:bottom="12dp"/>
+</shape>

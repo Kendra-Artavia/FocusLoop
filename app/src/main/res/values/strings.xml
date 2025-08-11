@@ -5,6 +5,7 @@
     <!-- Títulos de pantallas -->
     <string name="home_title">HOME</string>
     <string name="new_task_title">New Task</string>
+    <string name="my_tasks_title">My Tasks</string>
 
     <!-- Texto de los botones -->
     <string name="start_button">Start</string>
@@ -37,6 +38,7 @@
     <string name="status_hint">Not Started</string>
     <string name="start_date_hint">mm/dd/yyyy</string>
     <string name="end_date_hint">mm/dd/yyyy</string>
+    <string name="search_tasks_hint">Search tasks...</string>
 
     <!-- Etiquetas de secciones -->
     <string name="category_label">Category</string>
@@ -66,4 +68,22 @@
     <string name="music_relaxing">Relaxing</string>
     <string name="music_rain">Rain</string>
     <string name="pomodoro_time_default">25:00</string>
+
+    <string-array name="status_options">
+        <item>All</item> <!-- Agregar opción para "Todos" -->
+        <item>Not Started</item>
+        <item>In Progress</item>
+        <item>Completed</item>
+    </string-array>
+
+    <string-array name="category_options">
+        <item>All</item>
+        <item>Work</item>
+        <item>Personal</item>
+        <item>Others</item>
+    </string-array>
+
+    <string name="search_icon_desc">Search icon</string>
+    <string name="no_tasks_found">No tasks found</string>
+    <string name="create_first_task">Create your first task</string>
 </resources>

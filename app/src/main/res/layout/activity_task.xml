@@ -97,8 +97,8 @@
             android:layout_height="48dp"
             android:text="@string/new_category"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:background="@drawable/rounded_button_purple"
+            android:textColor="@color/colorPink"
+            android:background="@drawable/pink_border"
             android:foreground="?attr/selectableItemBackgroundBorderless"/>
     </LinearLayout>
 
@@ -173,8 +173,8 @@
             android:layout_weight="1"
             android:text="@string/cancel_button"
             android:textAllCaps="false"
-            android:background="@drawable/rounded_button_white"
-            android:textColor="@android:color/black"
+            android:background="@drawable/pink_border"
+            android:textColor="@color/colorPink"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:layout_marginEnd="8dp"/>
 
@@ -185,7 +185,7 @@
             android:layout_weight="1"
             android:text="@string/create_task_button"
             android:textAllCaps="false"
-            android:background="@drawable/rounded_button_purple"
+            android:background="@drawable/rounded_button_pink"
             android:textColor="@android:color/white"
             android:foreground="?attr/selectableItemBackgroundBorderless"/>
     </LinearLayout>
