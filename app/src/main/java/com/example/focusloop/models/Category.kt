@@ -12,26 +12,3 @@ data class Category(
     val id: Int,  // Un identificador único para cada categoría
     val name: String // El nombre de la categoría
 )
-
-class TaskListAdapter(private val tasks: List<Task>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
-        return TaskViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = tasks[position]
-        holder.bind(task)
-    }
-
-    override fun getItemCount(): Int = tasks.size
-
-    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val taskNameTextView: TextView = itemView.findViewById(R.id.taskName)
-
-        fun bind(task: Task) {
-            taskNameTextView.text = task.name // Mostrar el nombre de la tarea
-        }
-    }
-}
