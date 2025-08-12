@@ -5,7 +5,7 @@ data class Task(
     val name: String,
     val description: String,
     val category: Category,
-    val status: TaskStatus,
+    var status: TaskStatus, // <-- Cambiado a var
     val startDate: String?,
     val endDate: String?
 )
