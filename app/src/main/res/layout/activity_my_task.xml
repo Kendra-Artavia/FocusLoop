@@ -3,108 +3,140 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/white">
+    android:padding="16dp">
 
-    <!-- Botón de regreso -->
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:contentDescription="@string/back_button"
-        android:src="@drawable/icon_4"
-        android:layout_gravity="start"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        android:scaleType="centerInside" />
-
-    <!-- Título -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/my_tasks_title"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:layout_gravity="center" />
-
-
-    <!-- Barra de búsqueda -->
-    <EditText
-        android:id="@+id/searchTask"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search_tasks_hint"
-        android:padding="12dp"
-        android:background="@color/white"
-        android:textColor="@color/black"
-        android:textSize="16sp"/>
+        android:fillViewport="true"
+        android:overScrollMode="ifContentScrolls">
 
-    <!-- Filtros de estado y categoría -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:paddingTop="16dp">
-
-        <Spinner
-            android:id="@+id/statusSpinner"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/status_options"
-            android:background="@drawable/purple_border"/>
+            android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/categorySpinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/category_options"
-            android:background="@drawable/purple_border"
-            android:layout_marginLeft="16dp"/>
+            <!-- Header con botón de regreso y volumen -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="32dp">
 
-    </LinearLayout>
+                <!-- Botón de regreso -->
+                <ImageButton
+                    android:id="@+id/backButton"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:contentDescription="@string/back_button"
+                    android:src="@drawable/icon_4"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside" />
 
-    <!-- Mensaje cuando no hay tareas -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:paddingTop="40dp">
+                <!-- Título centrado -->
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/my_tasks_title"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:layout_gravity="center" />
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/icon_5"
-            android:contentDescription="@string/search_icon_desc"/>
+                <!-- Espacio a la derecha para centrar el título -->
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:visibility="invisible" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/no_tasks_found"
-            android:textSize="18sp"
-            android:textColor="#000000"
-            android:layout_marginTop="16dp"/>
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_first_task"
-            android:textSize="16sp"
-            android:textColor="@color/colorPink"
-            android:layout_marginTop="8dp"/>
+            <!-- Barra de búsqueda -->
+            <EditText
+                android:id="@+id/searchTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_tasks_hint"
+                android:padding="12dp"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
 
-    </LinearLayout>
+            <!-- Filtros de estado y categoría -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start|center_vertical"
+                android:paddingTop="16dp">
+
+                <Spinner
+                    android:id="@+id/statusSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/status_options"
+                    android:background="@drawable/purple_border"/>
+
+                <Spinner
+                    android:id="@+id/categorySpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/category_options"
+                    android:background="@drawable/purple_border"
+                    android:layout_marginLeft="16dp"/>
+
+            </LinearLayout>
+
+            <!-- Mensaje cuando no hay tareas -->
+            <LinearLayout
+                android:id="@+id/emptyStateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:paddingTop="40dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_6"
+                    android:contentDescription="@string/search_icon_desc"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_tasks_found"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorPurple"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/create_first_task"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPurple"
+                    android:layout_marginTop="8dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="16dp"
         android:scrollbars="vertical" />
 

@@ -6,6 +6,10 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import com.example.focusloop.R
 import android.os.CountDownTimer
+import android.app.Dialog
+import android.os.Vibrator
+import android.os.VibrationEffect
+
 class PomodoroActivity : AppCompatActivity() {
 
     private lateinit var mediaPlayer: MediaPlayer
@@ -23,9 +27,16 @@ class PomodoroActivity : AppCompatActivity() {
     // NUEVO: Estado para saber si la música está pausada
     private var isMusicPaused = false
 
+    // NUEVO: Variable para el sonido de alarma
+    private var alarmPlayer: MediaPlayer? = null
+
+    private var vibrator: Vibrator? = null
+    private var isVibrating = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pomodoro)
+        vibrator = getSystemService(VIBRATOR_SERVICE) as? Vibrator
 
         // --- MUSIC BUTTONS ---
         val musicAmbientButton = findViewById<Button>(R.id.musicAmbientButton)
@@ -62,20 +73,28 @@ class PomodoroActivity : AppCompatActivity() {
         val stopButton = findViewById<Button>(R.id.stopButton)
 
         startButton.setOnClickListener {
+            stopVibration() // Detener vibración al iniciar
             if (!timerRunning) {
                 // Siempre usa el valor actual de workMinutes antes de iniciar
-                timeLeftInMillis = workMinutes * 60 * 1000L
-                startPomodoroSession()
+                if (isPaused && pauseTimeLeft > 0L) {
+                    resumePomodoroSession()
+                } else {
+                    timeLeftInMillis = workMinutes * 60 * 1000L
+                    startPomodoroSession()
+                }
                 timerRunning = true
                 isPaused = false
+                stopButton.text = getString(R.string.pause_button)
             }
         }
 
         stopButton.setOnClickListener {
-            if (timerRunning || isPaused) {
-                stopPomodoroSession()
-                timerRunning = false
-                isPaused = false
+            if (timerRunning) {
+                pausePomodoroSession()
+                stopButton.text = getString(R.string.resume_button)
+            } else if (isPaused) {
+                resumePomodoroSession()
+                stopButton.text = getString(R.string.pause_button)
             }
         }
 
@@ -119,6 +138,7 @@ class PomodoroActivity : AppCompatActivity() {
 
         // Botón de volumen (pausar/reanudar música)
         val volumeButton = findViewById<ImageButton>(R.id.volumeButton)
+        updateVolumeIcon(volumeButton)
         volumeButton.setOnClickListener {
             if (::mediaPlayer.isInitialized) {
                 if (mediaPlayer.isPlaying) {
@@ -128,6 +148,7 @@ class PomodoroActivity : AppCompatActivity() {
                     mediaPlayer.start()
                     isMusicPaused = false
                 }
+                updateVolumeIcon(volumeButton)
             }
         }
 
@@ -157,6 +178,12 @@ class PomodoroActivity : AppCompatActivity() {
     }
 
     private fun startPomodoroSession() {
+        // Detener el sonido de alarma si está sonando
+        alarmPlayer?.let {
+            if (it.isPlaying) it.stop()
+            it.release()
+            alarmPlayer = null
+        }
         playMusic(selectedMusicType)
         // Usa el valor actual de timeLeftInMillis
         countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
@@ -174,6 +201,12 @@ class PomodoroActivity : AppCompatActivity() {
                 val pomodoroTime = findViewById<TextView>(R.id.pomodoroTime)
                 pomodoroTime.text = "00:00"
                 if (::mediaPlayer.isInitialized) mediaPlayer.stop()
+                // Reproducir sonido de alarma al finalizar
+                alarmPlayer = MediaPlayer.create(this@PomodoroActivity, R.raw.alarm_clock_sound)
+                alarmPlayer?.setOnCompletionListener { it.release(); alarmPlayer = null }
+                alarmPlayer?.start()
+                vibrateOnAlarm()
+                // No iniciar el siguiente tiempo automáticamente
             }
         }.start()
         timerRunning = true
@@ -187,6 +220,49 @@ class PomodoroActivity : AppCompatActivity() {
         pauseTimeLeft = timeLeftInMillis
         isPaused = false
         timerRunning = false
+    }
+
+    private fun pausePomodoroSession() {
+        countDownTimer?.cancel()
+        pauseTimeLeft = timeLeftInMillis
+        timerRunning = false
+        isPaused = true
+        // Pausar la música si está sonando
+        if (::mediaPlayer.isInitialized && mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+            isMusicPaused = true
+        }
+    }
+
+    private fun resumePomodoroSession() {
+        countDownTimer = object : CountDownTimer(pauseTimeLeft, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                val minutes = (millisUntilFinished / 1000) / 60
+                val seconds = (millisUntilFinished / 1000) % 60
+                val pomodoroTime = findViewById<TextView>(R.id.pomodoroTime)
+                pomodoroTime.text = String.format("%02d:%02d", minutes, seconds)
+            }
+            override fun onFinish() {
+                timerRunning = false
+                isPaused = false
+                pauseTimeLeft = 0L
+                val pomodoroTime = findViewById<TextView>(R.id.pomodoroTime)
+                pomodoroTime.text = "00:00"
+                if (::mediaPlayer.isInitialized) mediaPlayer.stop()
+                alarmPlayer = MediaPlayer.create(this@PomodoroActivity, R.raw.alarm_clock_sound)
+                alarmPlayer?.setOnCompletionListener { it.release(); alarmPlayer = null }
+                alarmPlayer?.start()
+                vibrateOnAlarm()
+            }
+        }.start()
+        timerRunning = true
+        isPaused = false
+        // Reanudar la música si estaba pausada
+        if (::mediaPlayer.isInitialized && isMusicPaused) {
+            mediaPlayer.start()
+            isMusicPaused = false
+        }
     }
 
     private fun playMusic(musicType: String) {
@@ -214,38 +290,95 @@ class PomodoroActivity : AppCompatActivity() {
 
     // Modifica showCustomTimeDialog para aceptar un callback opcional
     private fun showCustomTimeDialog(onSelected: (() -> Unit)? = null) {
-        val input = EditText(this)
-        input.hint = getString(R.string.enter_minutes_hint)
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle(getString(R.string.set_custom_time_title))
-            .setView(input)
-            .setPositiveButton(getString(R.string.set_button)) { d, _ ->
-                val time = input.text.toString().toIntOrNull() ?: 25
-                workMinutes = time
-                breakMinutes = 5
-                updateTimer()
-                timeLeftInMillis = workMinutes * 60 * 1000L
-                d.dismiss()
-                onSelected?.invoke()
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_custom_time)
+        dialog.setCancelable(true)
+
+        val input = dialog.findViewById<EditText>(R.id.inputMinutes)
+        val inputBreak = dialog.findViewById<EditText>(R.id.inputBreakMinutes)
+        val btnCancel = dialog.findViewById<Button>(R.id.btnCancel)
+        val btnSet = dialog.findViewById<Button>(R.id.btnSet)
+
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        btnSet.setOnClickListener {
+            val work = input.text.toString().toIntOrNull() ?: 25
+            val brk = inputBreak.text.toString().toIntOrNull() ?: 5
+            if (brk > work) {
+                Toast.makeText(this, getString(R.string.break_cannot_be_greater_than_work), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-            .setNegativeButton(getString(R.string.cancel_button)) { d, _ -> d.dismiss() }
-            .show()
+            workMinutes = work
+            breakMinutes = brk
+            updateTimer()
+            timeLeftInMillis = workMinutes * 60 * 1000L
+            dialog.dismiss()
+            onSelected?.invoke()
+        }
+        dialog.show()
+    }
+
+    private fun vibrateOnAlarm() {
+        try {
+            val pattern = longArrayOf(0, 500, 500) // vibrar 500ms, esperar 500ms, repetir
+            vibrator?.let {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    it.vibrate(VibrationEffect.createWaveform(pattern, 0)) // 0 = repetir desde el inicio
+                } else {
+                    @Suppress("DEPRECATION")
+                    it.vibrate(pattern, 0)
+                }
+                isVibrating = true
+            }
+        } catch (e: Exception) {
+            // No hacer nada si falla la vibración
+        }
+    }
+
+    private fun stopVibration() {
+        try {
+            vibrator?.cancel()
+            isVibrating = false
+        } catch (e: Exception) {
+            // No hacer nada si falla
+        }
+    }
+
+    private fun updateVolumeIcon(volumeButton: ImageButton) {
+        if (::mediaPlayer.isInitialized && !mediaPlayer.isPlaying) {
+            volumeButton.setImageResource(R.drawable.icon_1)
+        } else {
+            volumeButton.setImageResource(R.drawable.icon_5)
+        }
     }
 
     override fun onPause() {
         super.onPause()
+        stopVibration()
         // Stop and release music when leaving the screen or app
         if (::mediaPlayer.isInitialized && mediaPlayer.isPlaying) {
             mediaPlayer.stop()
+        }
+        // Detener y liberar el sonido de alarma si está sonando
+        alarmPlayer?.let {
+            if (it.isPlaying) it.stop()
+            it.release()
+            alarmPlayer = null
         }
         isMusicPaused = false
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        stopVibration()
         // Release MediaPlayer resources
         if (::mediaPlayer.isInitialized) {
             mediaPlayer.release()
+        }
+        // Detener y liberar el sonido de alarma si está sonando
+        alarmPlayer?.let {
+            if (it.isPlaying) it.stop()
+            it.release()
+            alarmPlayer = null
         }
         isMusicPaused = false
     }

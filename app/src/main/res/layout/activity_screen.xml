@@ -1,49 +1,71 @@
 <!-- activity_screen_options.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/white"
-    android:gravity="center">
+    android:orientation="vertical"
+    android:padding="16dp" >
 
-    <!-- Título centrado -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/home_title"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="40dp"
-        android:gravity="center"/>
 
-    <!-- Botón Nueva Tarea centrado -->
-    <Button
-        android:id="@+id/newTaskButton"
+    <!-- Icono de configuración de notificaciones en la esquina superior derecha -->
+    <ImageButton
+        android:id="@+id/notificationConfigButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/notification_settings"
+        android:src="@drawable/icon_7"
+        android:layout_margin="12dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside" />
+
+
+    <!-- Contenido principal -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/new_task_button"
-        android:background="@drawable/rounded_button_pink"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <!-- Botón Sesión Pomodoro centrado -->
-    <Button
-        android:id="@+id/pomodoroButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/pomodoro_button"
-        android:background="@drawable/rounded_button_blue"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="10dp" />
+        <!-- Título centrado -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:text="@string/home_title"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
 
-    <!-- Botón Mis Tareas centrado -->
-    <Button
-        android:id="@+id/myTasksButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/my_tasks_button"
-        android:background="@drawable/rounded_button_purple"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+        <!-- Botón Nueva Tarea centrado -->
+        <Button
+            android:id="@+id/newTaskButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_button_pink"
+            android:text="@string/new_task_button"
+            android:textColor="@android:color/white" />
+
+        <!-- Botón Sesión Pomodoro centrado -->
+
+        <!-- Botón Mis Tareas centrado -->
+        <Button
+            android:id="@+id/pomodoroButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_button_blue"
+            android:text="@string/pomodoro_button"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/myTasksButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button_purple"
+            android:text="@string/my_tasks_button"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</FrameLayout>

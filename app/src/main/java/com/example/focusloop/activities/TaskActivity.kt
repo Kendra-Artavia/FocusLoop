@@ -2,6 +2,7 @@
 package com.example.focusloop.activities
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.*
@@ -74,15 +75,45 @@ class TaskActivity : BaseActivity() {
 
         findViewById<Button>(R.id.cancelButton).setOnClickListener { finish() }
 
+        // Cargar datos si es modo edición
+        val isEditMode = intent.getBooleanExtra("edit_mode", false)
+        val editPosition = intent.getIntExtra("task_position", -1)
+        if (isEditMode && editPosition != -1) {
+            // Rellenar los campos con los datos de la tarea
+            taskName.setText(intent.getStringExtra("task_name") ?: "")
+            taskDescription.setText(intent.getStringExtra("task_description") ?: "")
+            val category = intent.getStringExtra("task_category") ?: ""
+            val categoryIndex = categoryNames.indexOfFirst { it.equals(category, true) }
+            if (categoryIndex >= 0) taskCategory.setSelection(categoryIndex)
+            val status = intent.getStringExtra("task_status") ?: "NOT_STARTED"
+            val statusIndex = statuses.indexOfFirst { it.equals(TaskStatus.valueOf(status).displayName, true) }
+            if (statusIndex >= 0) taskStatus.setSelection(statusIndex)
+            startDate.setText(intent.getStringExtra("task_start_date") ?: "")
+            endDate.setText(intent.getStringExtra("task_end_date") ?: "")
+            findViewById<Button>(R.id.createTaskButton).text = getString(R.string.create_task_button).replace("Create", "Save")
+        }
+
         findViewById<Button>(R.id.createTaskButton).setOnClickListener {
             val name = taskName.text.toString().trim()
             val description = taskDescription.text.toString().trim()
             val categoryName = taskCategory.selectedItem?.toString() ?: ""
             val status = TaskStatus.fromString(taskStatus.selectedItem.toString())
+            val startDateValue = startDate.text.toString().trim().ifEmpty { null }
+            val endDateValue = endDate.text.toString().trim().ifEmpty { null }
 
             if (name.isEmpty() || description.isEmpty() || categoryName.isEmpty()) {
                 Toast.makeText(this, "Please fill in all the fields.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            }
+            // Validar que la fecha de fin no sea menor a la de inicio
+            if (!startDateValue.isNullOrBlank() && !endDateValue.isNullOrBlank()) {
+                val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+                val start = sdf.parse(startDateValue)
+                val end = sdf.parse(endDateValue)
+                if (start != null && end != null && end.before(start)) {
+                    Toast.makeText(this, "End date cannot be before start date.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
             }
 
             val task = Task(
@@ -90,12 +121,22 @@ class TaskActivity : BaseActivity() {
                 description = description,
                 category = Category(0, categoryName),
                 status = status,
-                startDate = null, // si luego guardas fechas, pásalas aquí
-                endDate = null
+                startDate = startDateValue, // ahora sí se guarda la fecha
+                endDate = endDateValue
             )
 
-            repo.addTask(task)
-            Toast.makeText(this, "Task created successfully.", Toast.LENGTH_SHORT).show()
+            if (isEditMode && editPosition != -1) {
+                // Actualizar tarea existente
+                val tasks = repo.getTasks()
+                if (editPosition in tasks.indices) {
+                    tasks[editPosition] = task
+                    repo.saveTasks(tasks)
+                    Toast.makeText(this, "Task updated successfully.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                repo.addTask(task)
+                Toast.makeText(this, "Task created successfully.", Toast.LENGTH_SHORT).show()
+            }
             finish()
         }
 
@@ -103,47 +144,61 @@ class TaskActivity : BaseActivity() {
             showDatePickerDialog(startDate)
         }
         endDate.setOnClickListener {
-            showDatePickerDialog(endDate)
+            val startDateStr = startDate.text.toString().trim()
+            showDatePickerDialog(endDate, startDateStr)
         }
     }
 
     private fun showNewCategoryDialog() {
-        val input = EditText(this).apply { hint = "Category name" }
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("New Category")
-            .setView(input)
-            .setPositiveButton("Add") { d, _ ->
-                val name = input.text.toString().trim()
-                if (name.isEmpty()) {
-                    Toast.makeText(this, "Enter a category name.", Toast.LENGTH_SHORT).show()
-                } else if (categoryNames.any { it.equals(name, ignoreCase = true) }) {
-                    Toast.makeText(this, "Category already exists.", Toast.LENGTH_SHORT).show()
-                } else {
-                    repo.addCategoryName(name)
-                    categoryNames.add(name)
-                    categoryAdapter.notifyDataSetChanged()
-                    taskCategory.setSelection(categoryNames.lastIndex)
-                }
-                d.dismiss()
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_new_category)
+        dialog.setCancelable(true)
+
+        val input = dialog.findViewById<EditText>(R.id.inputCategoryName)
+        val btnCancel = dialog.findViewById<Button>(R.id.btnCancel)
+        val btnAdd = dialog.findViewById<Button>(R.id.btnAdd)
+
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        btnAdd.setOnClickListener {
+            val name = input.text.toString().trim()
+            if (name.isEmpty()) {
+                Toast.makeText(this, "Enter a category name.", Toast.LENGTH_SHORT).show()
+            } else if (categoryNames.any { it.equals(name, ignoreCase = true) }) {
+                Toast.makeText(this, "Category already exists.", Toast.LENGTH_SHORT).show()
+            } else {
+                repo.addCategoryName(name)
+                categoryNames.add(name)
+                categoryAdapter.notifyDataSetChanged()
+                taskCategory.setSelection(categoryNames.lastIndex)
+                dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { d, _ -> d.dismiss() }
-            .show()
+        }
+        dialog.show()
     }
 
-    private fun showDatePickerDialog(targetEditText: EditText) {
+    private fun showDatePickerDialog(targetEditText: EditText, minDateStr: String? = null) {
         val calendar = Calendar.getInstance()
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             val selectedCalendar = Calendar.getInstance()
             selectedCalendar.set(year, month, dayOfMonth)
             val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-            targetEditText.setText(sdf.format(selectedCalendar.time))
+            val selectedDateStr = sdf.format(selectedCalendar.time)
+            if (targetEditText.id == R.id.endDate && !minDateStr.isNullOrBlank()) {
+                val minDate = sdf.parse(minDateStr)
+                if (minDate != null && selectedCalendar.time.before(minDate)) {
+                    Toast.makeText(this, "End date cannot be before start date.", Toast.LENGTH_SHORT).show()
+                    return@OnDateSetListener
+                }
+            }
+            targetEditText.setText(selectedDateStr)
         }
-        DatePickerDialog(
+        val dialog = DatePickerDialog(
             this,
             dateSetListener,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        )
+        dialog.show()
     }
 }

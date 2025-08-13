@@ -9,7 +9,7 @@
 
     <!-- Texto de los botones -->
     <string name="start_button">Start</string>
-    <string name="stop_button">Stop</string>
+    <string name="stop_button">Pause</string>
     <string name="pomodoro_button">Pomodoro Session</string>
     <string name="my_tasks_button">My Tasks</string>
     <string name="cancel_button">Cancel</string>
@@ -23,7 +23,7 @@
     <string name="custom_button">Custom\nYour choice</string>
 
     <!-- Mensajes y Toast -->
-    <string name="toast_message">FELIZ RELAX</string>
+    <string name="toast_message">RELAX</string>
     <string name="image_description">Imagen de la aplicación</string>
 
     <!-- Mensajes de iconos -->
@@ -61,7 +61,7 @@
     <string name="base_mode_selected">Base mode selected</string>
     <string name="easy_mode_selected">Easy mode selected</string>
     <string name="custom_mode_selected">Custom mode selected</string>
-    <string name="enter_minutes_hint">Enter minutes</string>
+    <string name="enter_minutes_hint">Enter work minutes</string>
     <string name="set_custom_time_title">Set Custom Time</string>
     <string name="set_button">Set</string>
     <string name="music_ambient">Ambient</string>
@@ -70,7 +70,7 @@
     <string name="pomodoro_time_default">25:00</string>
 
     <string-array name="status_options">
-        <item>All</item> <!-- Agregar opción para "Todos" -->
+        <item>All</item>
         <item>Not Started</item>
         <item>In Progress</item>
         <item>Completed</item>
@@ -86,4 +86,18 @@
     <string name="search_icon_desc">Search icon</string>
     <string name="no_tasks_found">No tasks found</string>
     <string name="create_first_task">Create your first task</string>
+
+
+    <string name="delete_task_title">Delete Task</string>
+    <string name="delete_task_message">Are you sure you want to delete this task?</string>
+    <string name="accept_button">Accept</string>
+    <string name="enter_break_minutes_hint">Enter break minutes</string>
+    <string name="break_cannot_be_greater_than_work">Break time cannot be greater than work time</string>
+    <string name="add_button">Add</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="select_notification_time">Select notification time</string>
+    <string name="enable_daily_notifications">Enable daily task notifications</string>
+    <string name="notifications_enabled">Notifications enabled</string>
+    <string name="notifications_disabled">Notifications disabled</string>
+    <string name="ok">Ok</string>
 </resources>
