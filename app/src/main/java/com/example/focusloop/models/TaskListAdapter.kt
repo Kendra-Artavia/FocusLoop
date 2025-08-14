@@ -40,8 +40,8 @@ class TaskListAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapt
             taskCategoryTextView.text = task.category.name
 
             // Mostrar fechas de inicio y fin si existen
-            taskStartDateTextView.text = if (!task.startDate.isNullOrBlank()) "Inicio: ${task.startDate}" else ""
-            taskEndDateTextView.text = if (!task.endDate.isNullOrBlank()) "Fin: ${task.endDate}" else ""
+            taskStartDateTextView.text = if (!task.startDate.isNullOrBlank()) "Start: ${task.startDate}" else ""
+            taskEndDateTextView.text = if (!task.endDate.isNullOrBlank()) "End: ${task.endDate}" else ""
 
             // Mostrar los estados en minúsculas y con espacios
             val statuses = TaskStatus.entries.map {
