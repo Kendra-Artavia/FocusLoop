@@ -1,6 +1,6 @@
 # FocusLoop
 
-[▶️ Watch Demo](demo.mp4)
+[![Watch Demo](https://img.youtube.com/vi/jU2ooNbEaEY/0.jpg)](https://youtube.com/shorts/jU2ooNbEaEY?feature=share)
 
 FocusLoop is an Android application designed to help users take notes and manage them efficiently, while also providing a Pomodoro timer to boost productivity.
 
